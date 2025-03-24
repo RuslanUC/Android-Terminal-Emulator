@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         applicationId "jackpal.androidterm"
-        minSdkVersion 4
-        targetSdkVersion 22
+        minSdkVersion 21
+        targetSdkVersion 34
 
         ndk {
             moduleName "libjackpal-androidterm5"
@@ -30,6 +30,6 @@ android {
 }
 
 dependencies {
-    compile project(':emulatorview')
-    compile project(':libtermexec')
+    implementation project(':emulatorview')
+    implementation project(':libtermexec')
 }

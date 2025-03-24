@@ -17,6 +17,8 @@
 package jackpal.androidterm.emulatorview;
 
 import java.util.Arrays;
+import java.util.List;
+
 import android.graphics.Canvas;
 
 /**
@@ -92,8 +94,6 @@ class TranscriptScreen implements Screen {
      * @param x X coordinate (also known as column)
      * @param y Y coordinate (also known as row)
      * @param codePoint Unicode codepoint to store
-     * @param foreColor the foreground color
-     * @param backColor the background color
      */
     public void set(int x, int y, int codePoint, int style) {
         mData.setChar(x, y, codePoint, style);
@@ -316,7 +316,7 @@ class TranscriptScreen implements Screen {
         return internalGetTranscriptText(null, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
-    public String getTranscriptText(GrowableIntArray colors) {
+    public String getTranscriptText(List<Integer> colors) {
         return internalGetTranscriptText(colors, 0, -mData.getActiveTranscriptRows(), mColumns, mScreenRows);
     }
 
@@ -324,11 +324,11 @@ class TranscriptScreen implements Screen {
         return internalGetTranscriptText(null, selX1, selY1, selX2, selY2);
     }
 
-    public String getSelectedText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
+    public String getSelectedText(List<Integer> colors, int selX1, int selY1, int selX2, int selY2) {
         return internalGetTranscriptText(colors, selX1, selY1, selX2, selY2);
     }
 
-    private String internalGetTranscriptText(GrowableIntArray colors, int selX1, int selY1, int selX2, int selY2) {
+    private String internalGetTranscriptText(List<Integer> colors, int selX1, int selY1, int selX2, int selY2) {
         StringBuilder builder = new StringBuilder();
         UnicodeTranscript data = mData;
         int columns = mColumns;
@@ -362,7 +362,7 @@ class TranscriptScreen implements Screen {
                 if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                     builder.append('\n');
                     if (colors != null) {
-                        colors.append(0);
+                        colors.add(0);
                     }
                 }
                 continue;
@@ -404,7 +404,7 @@ class TranscriptScreen implements Screen {
                 if (rowColorBuffer != null) {
                     column = 0;
                     for (int j = 0; j <= lastPrintingChar; ++j) {
-                        colors.append(rowColorBuffer.get(column));
+                        colors.add(rowColorBuffer.get(column));
                         column += UnicodeTranscript.charWidth(line, j);
                         if (Character.isHighSurrogate(line[j])) {
                             ++j;
@@ -412,7 +412,7 @@ class TranscriptScreen implements Screen {
                     }
                 } else {
                     for (int j = 0; j <= lastPrintingChar; ++j) {
-                        colors.append(defaultColor);
+                        colors.add(defaultColor);
                         char c = line[j];
                         if (Character.isHighSurrogate(c)) {
                             ++j;
@@ -423,7 +423,7 @@ class TranscriptScreen implements Screen {
             if (!data.getLineWrap(row) && row < selY2 && row < mScreenRows - 1) {
                 builder.append('\n');
                 if (colors != null) {
-                    colors.append((char) 0);
+                    colors.add(0);
                 }
             }
         }

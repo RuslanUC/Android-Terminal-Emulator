@@ -16,6 +16,8 @@
 
 package jackpal.androidterm.emulatorview;
 
+import java.util.List;
+
 /**
  * An abstract screen interface. A terminal screen stores lines of text. (The
  * reason to abstract it is to allow different implementations, and to hide
@@ -103,7 +105,7 @@ interface Screen {
      * @param colors A GrowableIntArray which will hold the colors.
      * @return the contents of the transcript buffer.
      */
-    String getTranscriptText(GrowableIntArray colors);
+    String getTranscriptText(List<Integer> colors);
 
     /**
      * Get the selected text inside transcript buffer as a text string.
@@ -126,7 +128,7 @@ interface Screen {
      * @param y2 Selection end
      * @return the contents of the transcript buffer.
      */
-    String getSelectedText(GrowableIntArray colors, int x1, int y1, int x2, int y2);
+    String getSelectedText(List<Integer> colors, int x1, int y1, int x2, int y2);
 
     /**
      * Get the number of "active" (in-use) screen rows, including any rows in a

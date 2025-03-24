@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
+
+    namespace "jackpal.androidterm.emulatorview"
 
     defaultConfig {
-        minSdkVersion 4
-        targetSdkVersion 22
+        minSdkVersion 21
+        targetSdkVersion 34
     }
 
     buildTypes {

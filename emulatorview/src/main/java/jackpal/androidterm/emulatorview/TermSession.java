@@ -25,6 +25,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -139,7 +140,7 @@ public class TermSession {
     public TermSession(final boolean exitOnEOF) {
         mWriteCharBuffer = CharBuffer.allocate(2);
         mWriteByteBuffer = ByteBuffer.allocate(4);
-        mUTF8Encoder = Charset.forName("UTF-8").newEncoder();
+        mUTF8Encoder = StandardCharsets.UTF_8.newEncoder();
         mUTF8Encoder.onMalformedInput(CodingErrorAction.REPLACE);
         mUTF8Encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
 
@@ -167,8 +168,7 @@ public class TermSession {
                                     mMsgHandler.obtainMessage(NEW_INPUT));
                         }
                     }
-                } catch (IOException e) {
-                } catch (InterruptedException e) {
+                } catch (IOException | InterruptedException ignored) {
                 }
 
                 if (exitOnEOF) mMsgHandler.sendMessage(mMsgHandler.obtainMessage(EOF));
@@ -275,7 +275,7 @@ public class TermSession {
                 count -= written;
                 notifyNewOutput();
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 
@@ -291,11 +291,8 @@ public class TermSession {
      * @param data The String to write to the terminal.
      */
     public void write(String data) {
-        try {
-            byte[] bytes = data.getBytes("UTF-8");
-            write(bytes, 0, bytes.length);
-        } catch (UnsupportedEncodingException e) {
-        }
+        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+        write(bytes, 0, bytes.length);
     }
 
     /**
@@ -628,7 +625,7 @@ public class TermSession {
             mTermOut.close();
         } catch (IOException e) {
             // We don't care if this fails
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
         }
 
         if (mFinishCallback != null) {
